@@ -6,23 +6,61 @@
 module pair_detector(
     input stream,
     input sys_clk,
-
+    input sys_rst_n,
     output reg out
     );
 
-reg [1:0] pair;
 
-always @(negedge sys_clk) begin
-    pair[0] <= stream;
-    pair[1] <= pair[0];
-end
+reg [1:0] state;
 
-always @(negedge sys_clk) begin
-    if(pair[0] == pair[1]) begin
-        out <= 0;
+always @(posedge sys_clk or negedge sys_rst_n) begin
+    if(!sys_rst_n) begin
+        state <= 2'b00;
     end
     else begin
-        out <= 1;
+        case(state)
+            2'b00:
+                begin
+                    if(stream == 0) begin
+                        state <= 2'b01;
+                    end
+                    else begin
+                        state <= 2'b10;
+                    end
+                    out <= 0;
+                end
+            2'b01:
+                begin
+                    if(stream == 0) begin
+                        state <= 2'b11;
+                    end
+                    else begin
+                        state <= 2'b10;
+                    end
+                    out <= 0;
+                end
+            2'b10:
+                begin
+                    if (stream == 0) begin
+                        state <= 2'b01;
+                    end
+                    else begin
+                        state <= 2'b11;
+                    end
+                    out <= 0;
+                end
+            2'b11:
+                begin
+                    if (stream == 0) begin
+                        state <= 2'b01;
+                    end
+                    else begin
+                        state <= 2'b10;
+                    end
+                    out <= 1;
+                end
+        endcase
     end
 end
+
 endmodule

@@ -4,11 +4,14 @@
 //Device: GW1NR-9C
 
 
-IO_LOC "stream" 3;
+IO_LOC "stream" 4;
 IO_PORT "stream" PULL_MODE=UP;
 
-IO_LOC "sys_clk" 4;
+IO_LOC "sys_clk" 3;
 IO_PORT "sys_clk" PULL_MODE=UP;
+
+IO_LOC "sys_rst_n" 57;
+IO_PORT "sys_rst_n" PULL_MODE=UP;
 
 IO_LOC "out" 10;
 IO_PORT "out" PULL_MODE=DOWN DRIVE=8;
